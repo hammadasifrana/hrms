@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: 'API Server'
+  threads:
+    virtual:
+      enabled: true
+  profiles:
+    active: local
+
+server:
+  port: 8080

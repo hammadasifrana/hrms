@@ -1,0 +1,83 @@
+The loan request workflow involves several tables to manage different stages of the loan process, from the request to repayment. Here's a breakdown of the tables involved:
+
+1. loan_requests
+Purpose:
+Stores details of employee loan requests, including the loan type, requested amount, approval status, and terms.
+
+Key Fields:
+loan_id: Unique identifier for the loan request.
+employee_id: ID of the employee requesting the loan.
+client_id: ID for tenant isolation (SAAS).
+loan_type: Type of loan (e.g., housing, education).
+amount_requested: Loan amount requested by the employee.
+amount_approved: Approved loan amount (set upon approval).
+interest_rate: Interest rate applied to the loan.
+repayment_months: Duration of repayment in months.
+status: Status of the request (e.g., pending, approved, disbursed).
+reviewed_by: Manager or HR reviewing the request.
+2. loan_repayments
+Purpose:
+Tracks repayments made for approved loans.
+
+Key Fields:
+repayment_id: Unique identifier for each repayment transaction.
+loan_id: Links to the loan_requests table to associate repayment with the loan.
+repayment_date: Date of the repayment.
+amount_paid: Amount repaid.
+payment_method: Method of payment (e.g., salary deduction, bank transfer).
+payment_status: Status of repayment (e.g., pending, completed).
+3. employees
+Purpose:
+Stores employee details, including their loan balance.
+
+Key Fields:
+employee_id: Unique identifier for employees.
+loan_balance: Total outstanding loan amount for the employee.
+4. clients (For SAAS Multi-Tenant Setup)
+Purpose:
+Ensures tenant data isolation for the loan system.
+
+Key Fields:
+client_id: Unique identifier for the tenant organization.
+5. (Optional) payroll
+Purpose:
+If loan repayments are integrated with salary deductions, the payroll system is updated.
+
+Key Fields:
+employee_id: Links to the employee making the repayment.
+deductions: Tracks deductions made for loan repayments.
+Workflow Overview
+Step 1: Loan Request
+Tables Involved:
+loan_requests, employees, clients.
+Step 2: Review and Approval
+Tables Involved:
+loan_requests.
+Step 3: Disbursement
+Tables Involved:
+loan_requests, employees (to update loan balance).
+Step 4: Repayment
+Tables Involved:
+loan_repayments, loan_requests, employees (to update outstanding balance).
+Step 5: Integration with Payroll (Optional)
+Tables Involved:
+payroll, loan_repayments.
+Example Workflow in Action
+Employee submits a loan request:
+
+Entry is added to loan_requests.
+Manager reviews and approves the request:
+
+loan_requests.status is updated to approved.
+Approved amount and repayment terms are added to the record.
+Loan is disbursed:
+
+Update loan_balance in the employees table.
+Employee makes repayments:
+
+Entries are added to loan_repayments.
+Reduce loan_balance in the employees table.
+Payroll deductions occur (if applicable):
+
+Update payroll.deductions.
+This modular design allows flexibility and clear tracking of the entire loan workflow. Let me know if you'd like to add more integrations or features!

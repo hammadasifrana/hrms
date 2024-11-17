@@ -1,0 +1,89 @@
+Workflow Features
+1. Onboarding Process Initiation
+HR or admin creates an onboarding workflow in the onboarding_workflows table when a new hire is confirmed.
+Key fields: start date, assigned HR, initial status (initiated).
+2. Task Assignment
+Tasks like workstation setup, software account creation, and team introduction are added to the onboarding_tasks table.
+Each task is assigned a deadline and responsibility.
+3. Document Collection and Verification
+HR lists required documents (e.g., ID proof, tax forms) in the onboarding_documents table.
+Employees submit documents, and HR verifies them.
+4. Training and Orientation
+Training sessions are scheduled and tracked in the onboarding_trainings table.
+Status is updated upon completion, and feedback is collected.
+5. Monitoring and Completion
+Once all tasks, documents, and training are complete, the workflow status in onboarding_workflows is updated to completed.
+Sample Queries
+Initiate Onboarding Workflow
+sql
+Copy code
+INSERT INTO onboarding_workflows (employee_id, client_id, start_date, assigned_to)
+VALUES 
+(101, 1, '2024-11-18', 5);
+Add Onboarding Tasks
+sql
+Copy code
+INSERT INTO onboarding_tasks (workflow_id, client_id, task_name, description, assigned_to, due_date)
+VALUES 
+(1, 1, 'Workstation Setup', 'Prepare laptop and workspace for the employee', 6, '2024-11-19'),
+(1, 1, 'Software Account Setup', 'Create email and project management tool accounts', 7, '2024-11-20');
+Record Document Submission
+sql
+Copy code
+INSERT INTO onboarding_documents (workflow_id, client_id, document_name, is_submitted, submission_date, verified_by, verification_status)
+VALUES 
+(1, 1, 'ID Proof', TRUE, '2024-11-19', 8, 'verified');
+Schedule Training Sessions
+sql
+Copy code
+INSERT INTO onboarding_trainings (workflow_id, client_id, training_name, trainer_id, scheduled_date)
+VALUES 
+(1, 1, 'Introduction to Company Policies', 9, '2024-11-21');
+Update Workflow Completion
+sql
+Copy code
+UPDATE onboarding_workflows
+SET status = 'completed', end_date = '2024-11-22'
+WHERE workflow_id = 1;
+Reporting and Monitoring
+View Pending Onboarding Workflows
+sql
+Copy code
+SELECT * 
+FROM onboarding_workflows 
+WHERE status IN ('initiated', 'in_progress') AND client_id = 1;
+Track Overdue Tasks
+sql
+Copy code
+SELECT task_name, due_date, assigned_to
+FROM onboarding_tasks
+WHERE status = 'pending' AND due_date < CURRENT_DATE;
+Document Verification Status
+sql
+Copy code
+SELECT document_name, is_submitted, verification_status, remarks
+FROM onboarding_documents
+WHERE workflow_id = 1;
+Training Completion Status
+sql
+Copy code
+SELECT training_name, status
+FROM onboarding_trainings
+WHERE workflow_id = 1;
+Benefits of the Design
+Comprehensive Tracking:
+
+Manages tasks, documents, and training within a unified workflow.
+Accountability:
+
+Assigns tasks and responsibilities to specific employees for better monitoring.
+Tenant Isolation:
+
+Supports multi-tenant SAAS models with clear data separation.
+Employee Engagement:
+
+Tracks orientation and training effectiveness through feedback.
+Scalability:
+
+Easily extendable to include additional onboarding steps or automation.
+Let me know if you'd like further refinements!
