@@ -1,3 +1,36 @@
+-- auto-generated definition
+create table roles
+(
+    id          int auto_increment
+        primary key,
+    created_at  datetime(6)                           null,
+    description varchar(255)                          not null,
+    name        enum ('ADMIN', 'SUPER_ADMIN', 'USER') not null,
+    updated_at  datetime(6)                           null,
+    constraint UK_ofx66keruapi6vyqpv6f2or37
+        unique (name)
+);
+
+-- auto-generated definition
+create table users
+(
+    id         int auto_increment
+        primary key,
+    client_id  int          not null,
+    created_at datetime(6)  null,
+    email      varchar(100) not null,
+    full_name  varchar(255) not null,
+    password   varchar(255) not null,
+    updated_at datetime(6)  null,
+    role_id    int          not null,
+    constraint UK_6dotkott2kjsp8vw4d0m25fb7
+        unique (email),
+    constraint FKp56c1712k691lhsyewcssf40f
+        foreign key (role_id) references roles (id)
+);
+
+
+
 CREATE TABLE clients (
     client_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
