@@ -40,6 +40,7 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
         userDto.setFullName("Super Admin");
         userDto.setEmail("superadmin@test.com");
         userDto.setPassword("123456");
+        userDto.setClientId(1);
 
         Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.SUPER_ADMIN);
         Optional<User> optionalUser = userRepository.findByEmail(userDto.getEmail());
@@ -52,7 +53,8 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
                 .setFullName(userDto.getFullName())
                 .setEmail(userDto.getEmail())
                 .setPassword(passwordEncoder.encode(userDto.getPassword()))
-                .setRole(optionalRole.get());
+                .setRole(optionalRole.get())
+                .setClientId(userDto.getClientId());
 
         userRepository.save(user);
     }

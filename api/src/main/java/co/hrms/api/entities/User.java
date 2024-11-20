@@ -19,7 +19,7 @@ import java.util.List;
 @Entity
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Integer id;
 
@@ -31,6 +31,9 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false, name = "client_id")
+    private int clientId;
 
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
@@ -116,6 +119,11 @@ public class User implements UserDetails {
 
     public User setPassword(String password) {
         this.password = password;
+        return this;
+    }
+
+    public User setClientId(int clientId) {
+        this.clientId = clientId;
         return this;
     }
 

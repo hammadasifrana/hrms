@@ -8,10 +8,9 @@ import lombok.*;
 @Data
 public class RegisterUserDto {
     private String email;
-
     private String password;
-
     private String fullName;
+    private int clientId;
 
     // getters and setters here...
 }

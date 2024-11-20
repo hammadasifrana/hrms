@@ -377,7 +377,7 @@ ALTER TABLE employees
 ADD COLUMN manager_id INT DEFAULT NULL,
 ADD FOREIGN KEY (manager_id) REFERENCES employees(employee_id);
 
--- Employee Timesheets 
+-- Employee Timesheets
 
 CREATE TABLE timesheets (
     timesheet_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -424,7 +424,7 @@ CREATE TABLE timesheet_summary (
     FOREIGN KEY (project_id) REFERENCES projects(project_id)
 );
 
--- Employee Load and PF requests 
+-- Employee Load and PF requests
 
 CREATE TABLE loan_requests (
     loan_id INT AUTO_INCREMENT PRIMARY KEY,

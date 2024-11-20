@@ -11,8 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LoginUserDto {
     private String email;
-
     private String password;
+    private int clientId;
 
     // getters and setters here...
 }
