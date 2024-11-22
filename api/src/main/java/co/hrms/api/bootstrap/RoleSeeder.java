@@ -31,6 +31,7 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
                 RoleEnum.SUPER_ADMIN, "Super Administrator role"
         );
 
+        Set permissions = new HashSet();
         Arrays.stream(roleNames).forEach((roleName) -> {
             Optional<Role> optionalRole = roleRepository.findByName(roleName);
 
@@ -39,6 +40,7 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
 
                 roleToCreate.setName(roleName);
                 roleToCreate.setDescription(roleDescriptionMap.get(roleName));
+                roleToCreate.setPermissions(permissions);
 
                 roleRepository.save(roleToCreate);
             });

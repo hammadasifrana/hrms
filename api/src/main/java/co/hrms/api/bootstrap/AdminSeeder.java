@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Component
 public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
@@ -53,7 +54,7 @@ public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
                 .setFullName(userDto.getFullName())
                 .setEmail(userDto.getEmail())
                 .setPassword(passwordEncoder.encode(userDto.getPassword()))
-                .setRole(optionalRole.get())
+                .setRoles((Set<Role>) optionalRole.get())
                 .setClientId(userDto.getClientId());
 
         userRepository.save(user);
