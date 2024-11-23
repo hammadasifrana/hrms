@@ -14,12 +14,7 @@ export default class AuthController {
       ...user.serialize(),
     })
   }
-  async register({ request, response }: HttpContext) {
-    const payload = await request.validateUsing(registerValidator)
-    const user = await User.create(payload);
 
-    return response.created(user)
-  }
 
   async logout({ auth, response }: HttpContext) {
     const user = auth.getUserOrFail()
@@ -31,8 +26,5 @@ export default class AuthController {
     return response.ok({ message: 'Logged out' })
   }
 
-  async me({ auth, response }: HttpContext) {
-    await auth.check();
-    return { user: auth.user }
-  }
+
 }
