@@ -1,5 +1,6 @@
 import router from '@adonisjs/core/services/router'
 import {middleware} from "#start/kernel";
+
 const UsersController = () => import('#controllers/users_controller');
 const AuthController = () => import('#controllers/auth_controller')
 
@@ -10,16 +11,16 @@ router.group(() => {
 
 router.group(() => {
   router.post('register', [UsersController, 'register'])
-  router.get('list', [UsersController, 'list']).use([ middleware.auth(), middleware.role(['Admin']) ])
-  router.get('me', [AuthController, 'me']).use(middleware.auth())
+  router.get('list', [UsersController, 'list']).use([middleware.auth(), middleware.role(['Admin'])])
+  router.get('me', [UsersController, 'me']).use([middleware.auth(), middleware.role(['Admin', 'User'])])
 }).prefix('users')
 
 
-router.get('myself', async ({ auth, response }) => {
+router.get('myself', async ({auth, response}) => {
   try {
     const user = auth.getUserOrFail()
     return response.ok(user)
   } catch (error) {
-    return response.unauthorized({ error: 'User not found' })
+    return response.unauthorized({error: 'User not found'})
   }
 }).use(middleware.auth())
