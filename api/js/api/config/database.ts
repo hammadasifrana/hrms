@@ -15,6 +15,11 @@ const dbConfig = defineConfig({
       },
       migrations: {
         naturalSort: true,
+        schemaOptions: {
+          engine: 'InnoDB',
+          charset: 'utf8mb4',
+          collate: 'utf8mb4_unicode_ci',
+        },
         paths: ['database/migrations'],
       },
     },

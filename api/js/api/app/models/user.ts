@@ -18,13 +18,16 @@ export default class User extends compose(BaseModel, AuthFinder) {
   declare id: number
 
   @column()
-  declare fullName: string | null
-
-  @column()
   declare email: string
 
   @column({ serializeAs: null })
   declare password: string
+
+  @column()
+  declare client_id: string
+
+  @column()
+  declare employee_id: string
 
   @manyToMany(() => Role, {
     pivotTable: 'user_roles',
