@@ -14,7 +14,7 @@ export default class Role extends BaseModel {
   @manyToMany(() => Permission, {
     pivotTable: 'role_permissions',
   })
-  declare skills: ManyToMany<typeof Permission>
+  declare permissions: ManyToMany<typeof Permission>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

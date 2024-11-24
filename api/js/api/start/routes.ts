@@ -10,7 +10,7 @@ router.group(() => {
 }).prefix('auth')
 
 router.group(() => {
-  router.post('register', [UsersController, 'register'])
+  router.post('register', [UsersController, 'register']).use([middleware.auth(), middleware.role(['Admin'])])
   router.get('list', [UsersController, 'list']).use([middleware.auth(), middleware.role(['Admin'])])
   router.get('me', [UsersController, 'me']).use([middleware.auth(), middleware.role(['Admin', 'User'])])
 }).prefix('users')

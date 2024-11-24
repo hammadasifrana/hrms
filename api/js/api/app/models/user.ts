@@ -29,8 +29,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @manyToMany(() => Role, {
     pivotTable: 'user_roles',
   })
-
-  public roles: ManyToMany<typeof Role>
+  declare roles: ManyToMany<typeof Role>
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

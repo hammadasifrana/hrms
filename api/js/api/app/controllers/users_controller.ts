@@ -12,13 +12,17 @@ export default class UsersController {
   async register({ request, response }: HttpContext) {
     const payload = await request.validateUsing(registerValidator)
     const user = await User.create(payload);
-
     return response.created(user)
   }
 
   async me({ auth, response }: HttpContext) {
     await auth.check();
-    return { user: auth.user }
+    const user = auth.user;
+    await user.load('roles');
+    for (const role of user.roles) {
+      await role.load('permissions');
+    }
+    return { user: user.serialize() }
   }
   async list({ auth, response }: HttpContext) {
     const users = await User.all();
