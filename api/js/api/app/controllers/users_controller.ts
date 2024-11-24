@@ -1,15 +1,10 @@
-// import type { HttpContext } from '@adonisjs/core/http'
-
 import type {HttpContext} from "@adonisjs/core/http";
 import {registerValidator} from "#validators/auth";
 import User from "#models/user";
 import UserService from "#services/user_service";
-import {inject} from "@adonisjs/core";
 
-@inject()
 export default class UsersController {
-  constructor(private userService: UserService) {
-  }
+
   async index({ response }) {
     return response.ok({ message: 'Hello from UsersController' })
   }
@@ -31,7 +26,7 @@ export default class UsersController {
   }
   async list({ auth, response }: HttpContext) {
     //const users = await User.all();
-    const users = await this.userService.listUsers()
+    const users = await UserService.listUsers()
     return response.ok(users)
     }
 }
