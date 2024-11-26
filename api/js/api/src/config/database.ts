@@ -10,8 +10,6 @@ export const AppDataSource = new DataSource({
   synchronize: environment.NODE_ENV === 'development',
   logging: environment.NODE_ENV === 'development',
   entities: [User, Role, Permission],
-  migrations: [],
-  subscribers: []
 });
 
 export const initializeDatabase = async () => {
