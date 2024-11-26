@@ -1,7 +1,14 @@
 {
-  "extends": "@adonisjs/tsconfig/tsconfig.app.json",
-  "compilerOptions": {
-    "rootDir": "./",
-    "outDir": "./build"
+    "compilerOptions": {
+      "target": "es2018",
+      "module": "commonjs",
+      "strict": true,
+      "esModuleInterop": true,
+      "experimentalDecorators": true,
+      "emitDecoratorMetadata": true,
+      "outDir": "./dist",
+      "rootDir": "./src"
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
   }
-}
