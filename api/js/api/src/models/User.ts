@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable, Any } from 'typeorm';
 import { Role } from './Role';
+import { Permission } from './Permission';
 
 export enum UserStatus {
   ACTIVE = 'active',
@@ -10,36 +11,36 @@ export enum UserStatus {
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ unique: true })
-  email: string;
+  email!: string;
 
   @Column()
-  password: string;
+  password!: string;
 
   @Column()
-  firstName: string;
+  firstName!: string;
 
   @Column()
-  lastName: string;
+  lastName!: string;
 
   @Column({
     type: 'enum',
     enum: UserStatus,
     default: UserStatus.ACTIVE
   })
-  status: UserStatus;
+  status!: UserStatus;
 
   @ManyToMany(() => Role, { eager: true, cascade: true })
   @JoinTable({ name: 'user_roles' })
-  roles: Role[];
+  roles!: Role[];
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 
   hasPermission(permission: string): boolean {
     return this.roles.some(role => 

@@ -6,8 +6,12 @@ import { Permission } from '../models/Permission';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  url: environment.DATABASE_URL,
-  synchronize: environment.NODE_ENV === 'development',
+  host: 'localhost',
+  port: 5432,
+  username: 'postgres',
+  password: 'postgres',
+  database: 'hrms_api',
+  synchronize: false,
   logging: environment.NODE_ENV === 'development',
   entities: [User, Role, Permission],
 });

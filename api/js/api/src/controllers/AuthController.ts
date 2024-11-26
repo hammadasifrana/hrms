@@ -20,7 +20,7 @@ export class AuthController {
   };
 
   login = (req: Request, res: Response, next: NextFunction) => {
-    passport.authenticate('local', { session: false }, (err, user, info) => {
+    passport.authenticate('local', { session: false }, (err:Error, user:any, info:any) => {
       if (err) return next(err);
       if (!user) return res.status(400).json(info);
 
