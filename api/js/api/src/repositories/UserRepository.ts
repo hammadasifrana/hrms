@@ -1,4 +1,4 @@
-import { AppDataSource } from '../config/database';
+import { AppDataSource } from '../config/database.config';
 import { User } from '../models/User';
 import { Role } from '../models/Role';
 import { Permission } from '../models/Permission';

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import passport from '../config/passport';
+import passport from '../config/passport.config';
 import { User } from '../models/User';
 
 export const requireAuth = passport.authenticate('jwt', { session: false });

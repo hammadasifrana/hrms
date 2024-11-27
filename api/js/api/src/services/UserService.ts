@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { UserRepository } from '../repositories/UserRepository';
 import { User, UserStatus } from '../models/User';
-import { environment } from '../config/environment';
+import { environmentConfig } from '../config/environment.config';
 
 export class UserService {
   private userRepository = new UserRepository();
@@ -49,7 +49,7 @@ export class UserService {
         email: user.email,
         roles: user.roles.map(role => role.name)
       }, 
-      environment.JWT_SECRET, 
+      environmentConfig.JWT_SECRET,
       { expiresIn: '1d' }
     );
   }

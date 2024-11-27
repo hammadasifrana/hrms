@@ -3,7 +3,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import bcrypt from 'bcryptjs';
 import { UserService } from '../services/UserService';
-import { environment } from './environment';
+import { environmentConfig } from './environment.config';
 
 const userService = new UserService();
 
@@ -27,7 +27,7 @@ passport.use(new LocalStrategy(
 passport.use(new JwtStrategy(
     {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: environment.JWT_SECRET
+      secretOrKey: environmentConfig.JWT_SECRET
     },
     async (payload, done) => {
       try {

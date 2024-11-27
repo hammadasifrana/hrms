@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import passport from '../config/passport';
+import passport from '../config/passport.config';
 import { UserService } from '../services/UserService';
 
 export class AuthController {

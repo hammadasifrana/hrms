@@ -9,7 +9,7 @@ router.post('/register',
   authController.register
 );
 
-router.get('/login',
+router.post('/login',
   authController.login
 );
 
