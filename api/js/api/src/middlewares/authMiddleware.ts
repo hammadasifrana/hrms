@@ -10,15 +10,15 @@ export const checkPermission = (permission: string) => {
       const user = req.user as User;
 
       if (!user) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        res.status(401).json({ message: 'Unauthorized' });
       }
 
       if (!user.hasPermission(permission)) {
-        return res.status(403).json({ message: 'Forbidden' });
+        res.status(403).json({ message: 'Forbidden' });
       }
       return next();
     }catch (error){
-        return res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ message: 'Internal Server Error' });
     }
 
   };

@@ -13,26 +13,29 @@ import { UserService } from '../services/UserService';
       // Remove passwords
       const sanitizedUsers = users.map(({ password, ...user }) => user);
       
-      return res.json({
+      res.json({
         users: sanitizedUsers,
         page,
         limit,
         total
       });
     } catch (error) {
-      return next(error);
+      next(error);
     }
   };
 
   const getUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = await userService.findById(req.params.id);
-      if (!user) return res.status(404).json({ message: 'User not found' });
+      if (!user) {
+        res.status(404).json({ message: 'User not found' });
+        return;
+      }
       
       const { password, ...userResponse } = user;
-      return res.json(userResponse);
+      res.json(userResponse);
     } catch (error) {
-      return next(error);
+      next(error);
     }
   };
 
@@ -43,12 +46,15 @@ import { UserService } from '../services/UserService';
       
       const updatedUser = await userService.updateUser(id, userData, roles);
       
-      if (!updatedUser) return res.status(404).json({ message: 'User not found' });
+      if (!updatedUser) {
+        res.status(404).json({ message: 'User not found' });
+        return;
+      }
       
       const { password, ...userResponse } = updatedUser;
-      return res.json(userResponse);
+      res.json(userResponse);
     } catch (error) {
-      return next(error);
+      next(error);
     }
   };
 
@@ -57,11 +63,14 @@ import { UserService } from '../services/UserService';
       const { id } = req.params;
       const deleted = await userService.deleteUser(id);
       
-      if (!deleted) return res.status(404).json({ message: 'User not found' });
+      if (!deleted) {
+        res.status(404).json({ message: 'User not found' });
+        return;
+      }
       
-      return res.status(204).send();
+      res.status(204).send();
     } catch (error) {
-      return next(error);
+      next(error);
     }
   }
 

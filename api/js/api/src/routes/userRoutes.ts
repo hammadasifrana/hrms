@@ -10,17 +10,17 @@ router.get('/', requireAuth,
 );
 
 router.get('/:id',
-  //checkPermission('users:read'),
+  checkPermission('users:read'),
   getUser
 );
 
 router.put('/:id',
-  //checkPermission('users:update'),
+  checkPermission('users:update'),
   updateUser
 );
 
 router.delete('/:id',
-  //checkPermission('users:delete'),
+  checkPermission('users:delete'),
   deleteUser
 );
 
