@@ -4,7 +4,7 @@ import { User } from '../models/User';
 
 export const requireAuth = passport.authenticate('jwt', { session: false }) as RequestHandler;
 
-export const checkPermission = (permission: string) => {
+export const checkPermission = (permission: string): RequestHandler => {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
       const user = req.user as User;
