@@ -1,32 +1,31 @@
 import express from 'express';
-import { UserController } from '../controllers/UserController';
+import { listUsers,getUser,updateUser,deleteUser } from '../controllers/UserController';
 import { requireAuth, checkPermission } from '../middlewares/authMiddleware';
 
 const router = express.Router();
-const userController = new UserController();
 
-router.get('/', 
-  requireAuth, 
-  checkPermission('users:read'), 
-  userController.listUsers
+router.get('/',
+    requireAuth,
+    checkPermission('users:read'),
+    listUsers
 );
 
-router.get('/:id', 
-  requireAuth, 
-  checkPermission('users:read'), 
-  userController.getUser
+router.get('/:id',
+    requireAuth,
+    checkPermission('users:read'),
+    getUser
 );
 
-router.put('/:id', 
-  requireAuth, 
-  checkPermission('users:update'), 
-  userController.updateUser
+router.put('/:id',
+    requireAuth,
+    checkPermission('users:update'),
+    updateUser
 );
 
-router.delete('/:id', 
-  requireAuth, 
-  checkPermission('users:delete'), 
-  userController.deleteUser
+router.delete('/:id',
+    requireAuth,
+    checkPermission('users:delete'),
+    deleteUser
 );
 
 export default router;
