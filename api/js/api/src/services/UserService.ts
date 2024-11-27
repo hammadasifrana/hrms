@@ -31,9 +31,9 @@ export class UserService {
   }
 
   async updateUser(
-    id: string, 
-    userData: Partial<User>, 
-    roles?: string[]
+      id: string,
+      userData: Omit<any, "roles">,
+      roles?: string[]
   ): Promise<User | null> {
     if (userData.password) {
       userData.password = await bcrypt.hash(userData.password, 10);

@@ -27,7 +27,7 @@ class App {
 
     private initializeRoutes() {
         this.app.use('/auth', authRoutes);
-        this.app.use('/user', userRoutes);
+        //this.app.use('/user', userRoutes);
     }
 
     private async initializeDatabase() {

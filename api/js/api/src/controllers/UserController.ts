@@ -13,14 +13,14 @@ import { UserService } from '../services/UserService';
       // Remove passwords
       const sanitizedUsers = users.map(({ password, ...user }) => user);
       
-      res.json({
+      return res.json({
         users: sanitizedUsers,
         page,
         limit,
         total
       });
     } catch (error) {
-      next(error);
+      return next(error);
     }
   };
 
@@ -30,9 +30,9 @@ import { UserService } from '../services/UserService';
       if (!user) return res.status(404).json({ message: 'User not found' });
       
       const { password, ...userResponse } = user;
-      res.json(userResponse);
+      return res.json(userResponse);
     } catch (error) {
-      next(error);
+      return next(error);
     }
   };
 
@@ -46,9 +46,9 @@ import { UserService } from '../services/UserService';
       if (!updatedUser) return res.status(404).json({ message: 'User not found' });
       
       const { password, ...userResponse } = updatedUser;
-      res.json(userResponse);
+      return res.json(userResponse);
     } catch (error) {
-      next(error);
+      return next(error);
     }
   };
 
@@ -59,9 +59,9 @@ import { UserService } from '../services/UserService';
       
       if (!deleted) return res.status(404).json({ message: 'User not found' });
       
-      res.status(204).send();
+      return res.status(204).send();
     } catch (error) {
-      next(error);
+      return next(error);
     }
   }
 
