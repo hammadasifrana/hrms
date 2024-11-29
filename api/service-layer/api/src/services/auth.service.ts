@@ -1,21 +1,19 @@
 import {
   Injectable,
   ConflictException,
-  UnauthorizedException
-} from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+  UnauthorizedException, Inject
+} from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from "typeorm";
 import * as bcrypt from 'bcrypt';
-
 import { User } from '../entities/user.entity';
 import { Role } from '../entities/role.entity';
 import { Permission } from '../entities/permission.entity';
-import { CreateUserDto } from '../dtos/create-user.dto';
+import { CreateUserDto } from '../modules/auth/dtos/create-user.dto';
 import { ClientService } from "./client.service";
 import { ClientRepository } from "../repositories/client.repository";
 import { TenantContextService } from "./tenant-context.service";
-
+import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
   constructor(

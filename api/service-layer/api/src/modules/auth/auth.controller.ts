@@ -6,13 +6,13 @@ import {
   Get, 
   Request 
 } from '@nestjs/common';
-import { AuthService } from '../services/auth.service';
-import { CreateUserDto } from '../dtos/create-user.dto';
-import { JwtAuthGuard } from '../guards/jwt-auth.guard';
-import { PermissionsGuard } from '../guards/permission.guard';
-import { Permissions } from '../decorators/permissions.decorator';
-import { RolesGuard } from 'src/guards/role.guard';
-import { Roles } from 'src/decorators/roles.decorator';
+import { AuthService } from '../../services/auth.service';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
+import { PermissionsGuard } from '../common/guards/permission.guard';
+import { Permissions } from '../common/decorators/permissions.decorator';
+import { RolesGuard } from 'src/modules/common/guards/role.guard';
+import { Roles } from 'src/modules/common/decorators/roles.decorator';
 
 @Controller('auth')
 export class AuthController {

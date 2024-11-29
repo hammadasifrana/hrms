@@ -1,7 +1,7 @@
 import { Injectable, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Observable } from 'rxjs';
-import { TenantContextService } from '../services/tenant-context.service';
+import { TenantContextService } from '../../../services/tenant-context.service';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
