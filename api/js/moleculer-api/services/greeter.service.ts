@@ -4,6 +4,12 @@ export interface ActionHelloParams {
 	name: string;
 }
 
+interface Meta {
+	domainName?: string | null | undefined;
+	userAgent?: string | null | undefined;
+	user?: object | null | undefined;
+}
+
 interface GreeterSettings extends ServiceSettingSchema {
 	defaultName: string;
 }
@@ -42,8 +48,8 @@ const GreeterService: ServiceSchema<GreeterSettings> = {
 				method: "GET",
 				path: "/hello",
 			},
-			handler(this: GreeterThis/* , ctx: Context */): string {
-				return `Hello ${this.settings.defaultName}`;
+			handler(this: GreeterThis, ctx: Context<unknown, Meta>): string {
+				return `Hello ${this.settings.defaultName} from ${ctx.meta.domainName}`;
 			},
 		},
 
@@ -52,8 +58,8 @@ const GreeterService: ServiceSchema<GreeterSettings> = {
 			params: {
 				name: "string",
 			},
-			handler(this: GreeterThis, ctx: Context<ActionHelloParams>): string {
-				return `Welcome, ${ctx.params.name}`;
+			handler(this: GreeterThis, ctx: Context<ActionHelloParams, Meta>): string {
+				return `Welcome, ${ctx.params.name} from ${ctx.meta.domainName}`;
 			},
 		},
 	},

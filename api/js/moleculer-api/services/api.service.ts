@@ -3,6 +3,7 @@ import type { ApiSettingsSchema, GatewayResponse, IncomingRequest, Route } from 
 import ApiGateway from "moleculer-web";
 
 interface Meta {
+	domainName?: string | null | undefined;
 	userAgent?: string | null | undefined;
 	user?: object | null | undefined;
 }
@@ -22,7 +23,13 @@ const ApiService: ServiceSchema<ApiSettingsSchema> = {
 		ip: "0.0.0.0",
 
 		// Global Express middlewares. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Middlewares
-		use: [],
+		use: [
+			// (req: any, res: any, next: any) => {
+			// 	const domainName = req.rawHeaders[1];
+			// 	req.$ctx.domainName = { domainName }
+			// 	next()
+			// }
+		],
 
 		routes: [
 			{
@@ -50,7 +57,7 @@ const ApiService: ServiceSchema<ApiSettingsSchema> = {
 
 				/**
 				 * Before call hook. You can check the request.
-				 *
+				 */
 				onBeforeCall(
 					ctx: Context<unknown, Meta>,
 					route: Route,
@@ -58,8 +65,8 @@ const ApiService: ServiceSchema<ApiSettingsSchema> = {
 					res: GatewayResponse,
 				): void {
 					// Set request headers to context meta
-					ctx.meta.userAgent = req.headers["user-agent"];
-				}, */
+					ctx.meta.domainName = req.headers["host"];
+				},
 
 				/**
 				 * After call hook. You can modify the data.
