@@ -1,0 +1,54 @@
+{
+  "name": "moleculer-api",
+  "version": "1.0.0",
+  "description": "My Moleculer-based microservices project",
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json",
+    "dev": "ts-node ./node_modules/moleculer/bin/moleculer-runner.js --config moleculer.config.ts --hot --repl services/**/*.service.ts",
+    "start": "moleculer-runner --config dist/moleculer.config.js",
+    "test:types": "concurrently npm:prettier npm:lint npm:typecheck",
+    "typecheck": "tsc --noEmit && echo \"tsc: no typecheck errors\"",
+    "ci": "jest --watch",
+    "test": "jest --coverage",
+    "dc:up": "docker-compose up --build -d",
+    "dc:logs": "docker-compose logs -f",
+    "dc:down": "docker-compose down"
+  },
+  "keywords": [
+    "microservices",
+    "moleculer"
+  ],
+  "author": "",
+  "devDependencies": {
+    "@jest/globals": "^29.3.1",
+    "@types/jest": "^29.2.3",
+    "@types/node": "^18.19.67",
+    "concurrently": "^7.6.0",
+    "cross-env": "^7.0.3",
+    "jest": "^29.3.1",
+    "moleculer-repl": "^0.7.3",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^4.9.5"
+  },
+  "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/glob": "^8.1.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "bcryptjs": "^2.4.3",
+    "glob": "^11.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "moleculer": "^0.14.27",
+    "moleculer-db": "^0.8.21",
+    "moleculer-db-adapter-mongo": "^0.4.16",
+    "moleculer-web": "^0.10.5",
+    "nats": "^2.7.1",
+    "pg": "^8.13.1",
+    "reflect-metadata": "^0.2.2",
+    "typeorm": "^0.3.20",
+    "typeorm-naming-strategies": "^4.1.0"
+  },
+  "engines": {
+    "node": ">= 16.x.x"
+  }
+}
