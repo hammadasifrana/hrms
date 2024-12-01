@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"hadi@test.com\",\n    \"password\": \"12345678\"\n}",
+					"raw": "{\n    \"email\": \"hammad+user@test.com\",\n    \"password\": \"12345678\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -21,12 +21,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3333/auth/login",
+					"raw": "http://localhost:3000/auth/login",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3333",
+					"port": "3000",
 					"path": [
 						"auth",
 						"login"
@@ -46,7 +46,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "oat_MTM.ZDd6Ql9qRU10TS1oS0FXUWlBLW9WdkdhczFSbHY3UjduZHZqRWVQYzI1MjMyNzM3ODQ",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQwMWI2ZGY2LTUzN2YtNDhkZC1hZjg5LTBmYzczZGRkNjUyOSIsImVtYWlsIjoiaGFtbWFkK3VzZXJAdGVzdC5jb20iLCJyb2xlcyI6WyJ1c2VyIl0sImlhdCI6MTczMjcwNjg1NCwiZXhwIjoxNzMyNzkzMjU0fQ.UtxWFlgXbJAefwzjBKpewOUyEFhfWrl_FVzLxoOKSW0",
 							"type": "string"
 						}
 					]
@@ -63,15 +63,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3333/users/list",
+					"raw": "http://localhost:3000/user/",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3333",
+					"port": "3000",
 					"path": [
-						"users",
-						"list"
+						"user",
+						""
 					]
 				}
 			},
@@ -102,12 +102,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3333/user/logout",
+					"raw": "http://localhost:3000/user/logout",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3333",
+					"port": "3000",
 					"path": [
 						"user",
 						"logout"
@@ -127,7 +127,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "oat_MTM.ZDd6Ql9qRU10TS1oS0FXUWlBLW9WdkdhczFSbHY3UjduZHZqRWVQYzI1MjMyNzM3ODQ",
+							"value": "oat_MQ.ZmZDTGZTcHFYQzZfek9kSWNVR3FOTjNKQjBJQmNpRE9RSVJqb0dBRTE1MjEwOTA2MTk",
 							"type": "string"
 						}
 					]
@@ -144,12 +144,12 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3333/users/me",
+					"raw": "http://localhost:3000/users/me",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3333",
+					"port": "3000",
 					"path": [
 						"users",
 						"me"
@@ -175,7 +175,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"fullName\": \"hamza\",\n    \"email\": \"hamza@test.com\",\n    \"password\": \"12345678\",\n    \"roles\": [\"User\", \"Admin\"]\n}",
+					"raw": "{\n    \"email\": \"hammad+user@test.com\",\n    \"password\": \"12345678\",\n    \"name\": \"Hammad Rana\",\n    \"roleNames\": [\"user\"]\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -183,15 +183,97 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3333/users/register",
+					"raw": "http://localhost:3000/api/auth/register",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "3333",
+					"port": "3000",
 					"path": [
-						"users",
+						"api",
+						"auth",
 						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user-resources",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlODlkODRkOS0zZjVmLTQ4MzEtYjUzOC0wMzY3YzhlMGRkZTEiLCJlbWFpbCI6ImhhbW1hZCt1c2VyQHRlc3QuY29tIiwicm9sZXMiOlsidXNlciJdLCJwZXJtaXNzaW9ucyI6WyJyZWFkIl0sImlhdCI6MTczMjgwOTc0MywiZXhwIjoxNzMyODEzMzQzfQ.MJvSQYtMND7RYDuxoFIb5vgoNr02cCsOcg-_L9jhD5U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/auth/user-resources",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"user-resources"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin-resources",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlODlkODRkOS0zZjVmLTQ4MzEtYjUzOC0wMzY3YzhlMGRkZTEiLCJlbWFpbCI6ImhhbW1hZCt1c2VyQHRlc3QuY29tIiwicm9sZXMiOlsidXNlciJdLCJwZXJtaXNzaW9ucyI6WyJyZWFkIl0sImlhdCI6MTczMjc4NjA1MywiZXhwIjoxNzMyNzg5NjUzfQ.KfotIAWq_QccCVE7-ujT-Jx75TR36tQhx5Q0l629Ppw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/auth/admin-resources",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"auth",
+						"admin-resources"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Seed DB",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/auth/seed",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"auth",
+						"seed"
 					]
 				}
 			},

@@ -39,7 +39,6 @@ export class User {
   @Column()
   clientId!: string;
 
-
   @CreateDateColumn()
   createdAt!: Date;
 
