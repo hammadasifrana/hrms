@@ -57,6 +57,7 @@ const ApiService: ServiceSchema<ApiSettingsSchema> = {
 				aliases: {
 					"POST /login": "authService.login",
 					"POST /register": "authService.register",
+					"GET /seed": "authService.seedDB",
 				},
 
 				/**

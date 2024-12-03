@@ -26,7 +26,7 @@ const AuthService: ServiceSchema<AuthSettings> = {
 	/**
 	 * Settings
 	 */
-	ettings: {
+	settings: {
 		defaultName: "auth service",
 	},
 	/**
@@ -72,7 +72,7 @@ const AuthService: ServiceSchema<AuthSettings> = {
 			},
 		},
 
-		seedRolesAndPermissions: {
+		seedDB: {
 			authentication: true,
 			rest: "GET /seed",
 			async handler(ctx: Context): Promise<string> {
