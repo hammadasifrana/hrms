@@ -28,7 +28,7 @@ interface UsersThis extends Service<UserSettings>, MoleculerDbMethods {
 }
 
 const UsersService: ServiceSchema<UserSettings> = {
-	name: "users",
+	name: "usersService",
 	// version: 1
 
 	/**

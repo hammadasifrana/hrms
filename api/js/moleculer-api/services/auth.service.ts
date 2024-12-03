@@ -7,14 +7,15 @@ import { AuthManager } from "../managers/auth.manager";
 import {Role} from "../database/entities/role.entity";
 import {Permission} from "../database/entities/permission.entity";
 import {Client} from "../database/entities/client.entity";
+import {verifyToken} from "../utils/jwt-util";
 
 
 interface AuthSettings extends ServiceSettingSchema {
 	defaultName: string;
 }
 
-const UsersService: ServiceSchema<AuthSettings> = {
-	name: "auth",
+const AuthService: ServiceSchema<AuthSettings> = {
+	name: "authService",
 	// version: 1
 
 	/**
@@ -72,6 +73,7 @@ const UsersService: ServiceSchema<AuthSettings> = {
 		},
 
 		seedRolesAndPermissions: {
+			authentication: true,
 			rest: "GET /seed",
 			async handler(ctx: Context): Promise<string> {
 
@@ -135,4 +137,4 @@ const UsersService: ServiceSchema<AuthSettings> = {
 	 */
 };
 
-export default UsersService;
+export default AuthService;
