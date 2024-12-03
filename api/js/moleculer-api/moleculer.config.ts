@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import type { BrokerOptions, MetricRegistry, ServiceBroker } from "moleculer";
 import { Errors } from "moleculer";
+import dotenv from "dotenv";
 
 /**
  * Moleculer ServiceBroker configuration file
@@ -27,6 +28,9 @@ import { Errors } from "moleculer";
  *    }
  *  }
  */
+
+dotenv.config();
+
 const brokerConfig: BrokerOptions = {
 	// Namespace of nodes to segment your nodes on the same network.
 	namespace: "",

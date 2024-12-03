@@ -5,6 +5,8 @@ import { User } from '../database/entities/user.entity';
 import { Role } from '../database/entities/role.entity';
 import { AppDataSource } from "../database/data-source";
 import {Client} from "../database/entities/client.entity";
+import jwt from "jsonwebtoken";
+import {generateToken} from "../utils/jwt-util";
 const { MoleculerError } = require("moleculer").Errors;
 
 export class AuthManager {
@@ -83,8 +85,10 @@ export class AuthManager {
 			)
 		};
 
+		const token = generateToken(payload);
+
 		return {
-			access_token: "fake access token",
+			access_token: token,
 			user: {
 				id: user.id,
 				email: user.email,
