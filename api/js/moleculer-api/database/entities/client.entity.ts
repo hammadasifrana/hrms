@@ -1,37 +1,38 @@
 // src/clients/client.entity.ts
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  CreateDateColumn,
-  UpdateDateColumn
+	Entity,
+	PrimaryGeneratedColumn,
+	Column,
+	OneToMany,
+	CreateDateColumn,
+	UpdateDateColumn, JoinColumn, ManyToOne
 } from 'typeorm';
-import { User } from './user.entity';
+import {User} from './user.entity';
+import {Tenant} from "./tenant.entity";
 
 @Entity('clients')
 export class Client {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
+	@PrimaryGeneratedColumn('uuid')
+	id!: string;
 
-  @Column({ unique: true })
-  name!: string;
+	@Column({unique: true})
+	name!: string;
 
-  @Column({ unique: true })
-  domain!: string;
+	@ManyToOne(() => Tenant, tenant => tenant.clients)
+	@JoinColumn({ name: 'tenantId' })
+	tenant!: Tenant;
 
-  @Column({ type: 'jsonb', nullable: true })
-  configuration!: Record<string, any>;
+	@Column({ name: 'tenantId' })
+	tenantId!: string;
 
-  @Column({ default: true })
-  isActive!: boolean;
+	@Column({default: true})
+	isActive!: boolean;
 
-  @CreateDateColumn()
-  createdAt!: Date;
+	@CreateDateColumn()
+	createdAt!: Date;
 
-  @UpdateDateColumn()
-  updatedAt!: Date;
+	@UpdateDateColumn()
+	updatedAt!: Date;
 
-  @OneToMany(() => User, user => user.client)
-  users!: User[];
+
 }

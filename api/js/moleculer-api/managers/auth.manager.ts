@@ -7,6 +7,7 @@ import { AppDataSource } from "../database/data-source";
 import {Client} from "../database/entities/client.entity";
 import jwt from "jsonwebtoken";
 import {generateToken} from "../utils/jwt-util";
+import {Tenant} from "../database/entities/tenant.entity";
 const { MoleculerError } = require("moleculer").Errors;
 
 export class AuthManager {
@@ -14,21 +15,22 @@ export class AuthManager {
 		private userRepository = AppDataSource.getRepository(User),
 		private clientRepository = AppDataSource.getRepository(Client),
 		private roleRepository = AppDataSource.getRepository(Role),
+		private tenantRepository = AppDataSource.getRepository(Tenant),
 	) {}
 
 	async register(UserRegisterParams: any): Promise<User> {
 		const { email, password, name, roleNames } = UserRegisterParams;
 
 		// the client id should come from context
-		const clientId = 'b8fd6b99-dc56-4d33-a239-89e09517f419';
-		const client = await this.clientRepository.findOne({ where: { id: clientId } });
+		const tenantId = 'b8fd6b99-dc56-4d33-a239-89e09517f419';
+		const tenant = await this.tenantRepository.findOne({ where: { id: tenantId } });
 
 		const existingUser = await this.userRepository.findOne({
 			where: {
 				email,
-				...(client && { clientId: client.id })
+				...(tenant && { tenantId: tenant.id })
 			},
-			relations: ['client'] // Optional: load client relation
+			relations: ['tenant'] // Optional: load client relation
 		});
 
 		if (existingUser) {
@@ -47,20 +49,20 @@ export class AuthManager {
 			password: hashedPassword,
 			name,
 			roles,
-			client: client ? client : undefined
+			tenant: tenant ? tenant : undefined
 		});
 		return user as User;
 	}
 
 	async login(email: string, password: string) {
 		// the client id should come from context
-		const clientId = 'b8fd6b99-dc56-4d33-a239-89e09517f419';
-		const client = await this.clientRepository.findOne({ where: { id: clientId } });
+		const tenantId = 'b8fd6b99-dc56-4d33-a239-89e09517f419';
+		const tenant = await this.tenantRepository.findOne({ where: { id: tenantId } });
 
 		const user = await this.userRepository.findOne({
 			where: {
 				email,
-				...(client && { clientId: client.id })
+				...(tenant && { tenantId: tenant.id })
 			},
 			relations: ['roles', 'roles.permissions']
 		});
@@ -78,7 +80,7 @@ export class AuthManager {
 		const payload = {
 			sub: user.id,
 			email: user.email,
-			clientId: user.clientId,
+			tenantId: user.tenantId,
 			roles: user.roles.map(role => role.name),
 			permissions: user.roles.flatMap(role =>
 				role.permissions.map(perm => perm.name)
@@ -88,11 +90,11 @@ export class AuthManager {
 		const token = generateToken(payload);
 
 		return {
-			access_token: token,
+			accessToken: token,
 			user: {
 				id: user.id,
 				email: user.email,
-				clientId: user.clientId,
+				tenantId: user.tenantId,
 				roles: user.roles.map(role => role.name),
 				permissions: payload.permissions
 			}

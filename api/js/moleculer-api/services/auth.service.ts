@@ -8,6 +8,7 @@ import {Role} from "../database/entities/role.entity";
 import {Permission} from "../database/entities/permission.entity";
 import {Client} from "../database/entities/client.entity";
 import {verifyToken} from "../utils/jwt-util";
+import {Tenant} from "../database/entities/tenant.entity";
 
 
 interface AuthSettings extends ServiceSettingSchema {
@@ -78,22 +79,23 @@ const AuthService: ServiceSchema<AuthSettings> = {
 			async handler(ctx: Context): Promise<string> {
 
 				const clientRepository = AppDataSource.getRepository(Client);
+				const tenantRepository = AppDataSource.getRepository(Tenant);
 				const userRepository = AppDataSource.getRepository(User);
 				const roleRepository = AppDataSource.getRepository(Role);
 				const permissionRepository = AppDataSource.getRepository(Permission);
 
-				const createClient =  await clientRepository.create({ id: 'b8fd6b99-dc56-4d33-a239-89e09517f419', name: 'Client 1', domain: 'localhost:3000' });
+				const createTenant =  await tenantRepository.create({ id: 'b8fd6b99-dc56-4d33-a239-89e09517f419', name: 'Tenant 1', domain: 'localhost:3000' });
 
-				await clientRepository.save(createClient);
+				await tenantRepository.save(createTenant);
 
 				const createPerm = await permissionRepository.findOne({ where: { name: 'create' } })
-					|| permissionRepository.create({ name: 'create', description: 'Create resources' });
+					|| permissionRepository.create({ name: 'create', description: 'Create resources', tenantId: createTenant.id });
 				const readPerm = await permissionRepository.findOne({ where: { name: 'read' } })
-					|| permissionRepository.create({ name: 'read', description: 'Read resources' });
+					|| permissionRepository.create({ name: 'read', description: 'Read resources', tenantId: createTenant.id });
 				const updatePerm = await permissionRepository.findOne({ where: { name: 'update' } })
-					|| permissionRepository.create({ name: 'update', description: 'Update resources' });
+					|| permissionRepository.create({ name: 'update', description: 'Update resources', tenantId: createTenant.id });
 				const deletePerm = await permissionRepository.findOne({ where: { name: 'delete' } })
-					|| permissionRepository.create({ name: 'delete', description: 'Delete resources' });
+					|| permissionRepository.create({ name: 'delete', description: 'Delete resources', tenantId: createTenant.id });
 
 				await permissionRepository.save([createPerm, readPerm, updatePerm, deletePerm]);
 
@@ -102,14 +104,17 @@ const AuthService: ServiceSchema<AuthSettings> = {
 					|| roleRepository.create({
 						name: 'user',
 						description: 'Standard user role',
-						permissions: [readPerm]
+						permissions: [readPerm],
+						tenantId: createTenant.id
 					});
 
 				const adminRole = await roleRepository.findOne({ where: { name: 'admin' } })
 					|| roleRepository.create({
 						name: 'admin',
 						description: 'Administrator role',
-						permissions: [createPerm, readPerm, updatePerm, deletePerm]
+						permissions: [createPerm, readPerm, updatePerm, deletePerm],
+						tenantId: createTenant.id
+
 					});
 
 				await roleRepository.save([userRole, adminRole]);

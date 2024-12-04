@@ -1,47 +1,48 @@
 import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  CreateDateColumn,
-  UpdateDateColumn,
-  ManyToMany,
-  JoinTable, JoinColumn, ManyToOne
+	Entity,
+	PrimaryGeneratedColumn,
+	Column,
+	CreateDateColumn,
+	UpdateDateColumn,
+	ManyToMany,
+	JoinTable, JoinColumn, ManyToOne
 } from "typeorm";
-import { Role } from './role.entity';
-import { Client } from "./client.entity";
+import {Role} from './role.entity';
+import {Client} from "./client.entity";
+import {Tenant} from "./tenant.entity";
 
 @Entity('users')
 export class User {
-  @PrimaryGeneratedColumn('uuid')
-  id!: string;
+	@PrimaryGeneratedColumn('uuid')
+	id!: string;
 
-  @Column({ unique: true })
-  email!: string;
+	@Column({unique: true})
+	email!: string;
 
-  @Column()
-  password!: string;
+	@Column()
+	password!: string;
 
-  @ManyToMany(() => Role, { eager: true, cascade: true })
-  @JoinTable({
-    name: 'user_roles',
-    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'role_id', referencedColumnName: 'id' }
-  })
-  roles!: Role[];
+	@ManyToMany(() => Role, {eager: true, cascade: true})
+	@JoinTable({
+		name: 'user_roles',
+		joinColumn: {name: 'userId', referencedColumnName: 'id'},
+		inverseJoinColumn: {name: 'roleId', referencedColumnName: 'id'}
+	})
+	roles!: Role[];
 
-  @Column({ nullable: true })
-  name!: string;
+	@Column({nullable: true})
+	name!: string;
 
-  @ManyToOne(() => Client, client => client.users)
-  @JoinColumn({ name: 'clientId' })
-  client!: Client;
+	@ManyToOne(() => Tenant, tenant => tenant.users)
+	@JoinColumn({ name: 'tenantId' })
+	tenant!: Tenant;
 
-  @Column()
-  clientId!: string;
+	@Column({ name: 'tenantId' })
+	tenantId!: string;
 
-  @CreateDateColumn()
-  createdAt!: Date;
+	@CreateDateColumn()
+	createdAt!: Date;
 
-  @UpdateDateColumn()
-  updatedAt!: Date;
+	@UpdateDateColumn()
+	updatedAt!: Date;
 }
