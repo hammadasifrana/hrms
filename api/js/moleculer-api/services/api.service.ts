@@ -2,12 +2,8 @@ import type { Context, ServiceSchema } from "moleculer";
 import type { ApiSettingsSchema, GatewayResponse, IncomingRequest, Route } from "moleculer-web";
 import ApiGateway from "moleculer-web";
 import {verifyToken} from "../utils/jwt-util";
-
-interface Meta {
-	domainName?: string | null | undefined;
-	userAgent?: string | null | undefined;
-	user?: object | null | undefined;
-}
+import { Meta } from "../interfaces/meta.interface";
+import {tenantResolver} from "../utils/tenant-resolver";
 
 const ApiService: ServiceSchema<ApiSettingsSchema> = {
 	name: "api",
@@ -58,19 +54,20 @@ const ApiService: ServiceSchema<ApiSettingsSchema> = {
 					"POST /login": "authService.login",
 					"POST /register": "authService.register",
 					"GET /seed": "authService.seedDB",
+					"GET /hello": "greeter.hello",
 				},
 
 				/**
 				 * Before call hook. You can check the request.
 				 */
-				onBeforeCall(
+				onBeforeCall: async (
 					ctx: Context<unknown, Meta>,
 					route: Route,
 					req: IncomingRequest,
 					res: GatewayResponse,
-				): void {
+				) => {
 					// Set request headers to context meta
-					ctx.meta.domainName = req.headers["host"];
+					ctx = await tenantResolver(ctx, route, req, res);
 				},
 
 				/**

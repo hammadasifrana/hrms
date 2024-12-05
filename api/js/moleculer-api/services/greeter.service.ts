@@ -1,14 +1,10 @@
 import type { Context, Service, ServiceSchema, ServiceSettingSchema } from "moleculer";
+import { Meta } from "../interfaces/meta.interface";
 
 export interface ActionHelloParams {
 	name: string;
 }
 
-interface Meta {
-	domainName?: string | null | undefined;
-	userAgent?: string | null | undefined;
-	user?: object | null | undefined;
-}
 
 interface GreeterSettings extends ServiceSettingSchema {
 	defaultName: string;
@@ -49,7 +45,7 @@ const GreeterService: ServiceSchema<GreeterSettings> = {
 				path: "/hello",
 			},
 			handler(this: GreeterThis, ctx: Context<unknown, Meta>): string {
-				return `Hello ${this.settings.defaultName} from ${ctx.meta.domainName}`;
+				return `Hello ${this.settings.defaultName} from ${ctx.meta.tenantId}`;
 			},
 		},
 
@@ -59,7 +55,7 @@ const GreeterService: ServiceSchema<GreeterSettings> = {
 				name: "string",
 			},
 			handler(this: GreeterThis, ctx: Context<ActionHelloParams, Meta>): string {
-				return `Welcome, ${ctx.params.name} from ${ctx.meta.domainName}`;
+				return `Welcome, ${ctx.params.name} from ${ctx.meta.tenantId}`;
 			},
 		},
 	},
