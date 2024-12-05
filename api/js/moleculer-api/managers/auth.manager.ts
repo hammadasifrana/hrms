@@ -13,7 +13,6 @@ const { MoleculerError } = require("moleculer").Errors;
 export class AuthManager {
 	constructor(
 		private userRepository = AppDataSource.getRepository(User),
-		private clientRepository = AppDataSource.getRepository(Client),
 		private roleRepository = AppDataSource.getRepository(Role),
 		private tenantRepository = AppDataSource.getRepository(Tenant),
 	) {}

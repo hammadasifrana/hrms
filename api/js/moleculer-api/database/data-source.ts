@@ -6,9 +6,10 @@ dotenv.config();
 
 export const AppDataSource = new DataSource(databaseConfig);
 
-
 AppDataSource.initialize()
 	.then(() => {
-		// here you can start to work with your database
+		console.log('Data Source has been initialized!');
 	})
-	.catch((error) => console.log(error))
+	.catch((err) => {
+		console.error('Error during Data Source initialization', err);
+	});

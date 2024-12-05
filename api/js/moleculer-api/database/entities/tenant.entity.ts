@@ -20,7 +20,13 @@ export class Tenant {
 	@Column({ unique: true })
 	name!: string;
 
-	@Column({unique: true})
+	@Column({
+		unique: true,
+		transformer: {
+			to: (value: string) => value.toLowerCase().replace(/^https?:\/\//, ''),
+			from: (value: string) => value
+		}
+	})
 	domain!: string;
 
 	@Column({ default: true })
