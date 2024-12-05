@@ -3,7 +3,7 @@ import type { ApiSettingsSchema, GatewayResponse, IncomingRequest, Route } from 
 import ApiGateway from "moleculer-web";
 import {verifyToken} from "../utils/jwt-util";
 import { Meta } from "../interfaces/meta.interface";
-import {tenantResolver} from "../utils/tenant-resolver";
+import {tenantResolverUtil} from "../utils/tenant-resolver-util";
 
 const ApiService: ServiceSchema<ApiSettingsSchema> = {
 	name: "api",
@@ -67,7 +67,7 @@ const ApiService: ServiceSchema<ApiSettingsSchema> = {
 					res: GatewayResponse,
 				) => {
 					// Set request headers to context meta
-					ctx = await tenantResolver(ctx, route, req, res);
+					ctx = await tenantResolverUtil(ctx, route, req, res);
 				},
 
 				/**

@@ -4,7 +4,7 @@ import {AppDataSource} from "../database/data-source";
 import {Tenant} from "../database/entities/tenant.entity";
 import type {GatewayResponse, IncomingRequest, Route} from "moleculer-web";
 
-export const tenantResolver = async (
+export const tenantResolverUtil = async (
 	ctx: Context<unknown, Meta>,
 	route: Route,
 	req: IncomingRequest,
@@ -15,6 +15,8 @@ export const tenantResolver = async (
 		const domain = req.headers['host']
 			|| 'localhost:3000';
 
+		console.log("Context Resolver Called");
+
 		//const cleanDomain = domain.replace(/^https?:\/\//, '').split(':')[0];
 		const cleanDomain = domain;
 
@@ -24,6 +26,10 @@ export const tenantResolver = async (
 			where: {
 				domain: cleanDomain,
 				isActive: true
+			},
+			cache: {
+				id: `tenant_${cleanDomain}`,
+				milliseconds: 60000 // 1 minute cache
 			}
 		});
 
