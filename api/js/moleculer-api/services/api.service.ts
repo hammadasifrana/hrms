@@ -4,6 +4,7 @@ import ApiGateway from "moleculer-web";
 import {verifyToken} from "../utils/jwt-util";
 import { Meta } from "../interfaces/meta.interface";
 import {tenantResolverUtil} from "../utils/tenant-resolver-util";
+import {decode} from "jsonwebtoken";
 
 const ApiService: ServiceSchema<ApiSettingsSchema> = {
 	name: "api",
@@ -133,14 +134,14 @@ const ApiService: ServiceSchema<ApiSettingsSchema> = {
 				/**
 				 * Before call hook. You can check the request.
 				 */
-				onBeforeCall(
+				onBeforeCall: async (
 					ctx: Context<unknown, Meta>,
 					route: Route,
 					req: IncomingRequest,
 					res: GatewayResponse,
-				): void {
+				) => {
 					// Set request headers to context meta
-					ctx.meta.domainName = req.headers["host"];
+					ctx = await tenantResolverUtil(ctx, route, req, res);
 				},
 
 				/**
@@ -205,7 +206,7 @@ const ApiService: ServiceSchema<ApiSettingsSchema> = {
 		 * PLEASE NOTE, IT'S JUST AN EXAMPLE IMPLEMENTATION. DO NOT USE IN PRODUCTION!
 		 */
 		authenticate(
-			ctx: Context,
+			ctx: Context<unknown, Meta>,
 			route: Route,
 			req: IncomingRequest,
 		): Record<string, unknown> | null {
@@ -237,7 +238,29 @@ const ApiService: ServiceSchema<ApiSettingsSchema> = {
 			// Check the token. Tip: call a service which verify the token. E.g. `accounts.resolveToken`
 				if (verifyToken(token)) {
 					// Returns the resolved user. It will be set to the `ctx.meta.user`
-					return { id: 1, name: "John Doe" };
+					const decodedToken = decode(token)  || null;
+					const decodedTokenString = JSON.stringify(decodedToken);
+
+
+					// Validate decoded token
+					if (!decodedToken) {
+						throw new ApiGateway.Errors.UnAuthorizedError(
+							ApiGateway.Errors.ERR_INVALID_TOKEN,
+							'Unable to decode token'
+						);
+					}
+
+					const decodedTokenJson = JSON.parse(decodedTokenString);
+
+					console.log('decodedTokenJson', decodedTokenJson);
+					// Return user information
+					return {
+						id: decodedTokenJson.sub,
+						email: decodedTokenJson.email,
+						roles: decodedTokenJson.roles,
+						tenantId: decodedTokenJson.tenantId,
+						permissions: decodedTokenJson.permissions,
+					};
 				}
 				// Invalid token
 				throw new ApiGateway.Errors.UnAuthorizedError(

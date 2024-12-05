@@ -3,6 +3,7 @@ import type { DbAdapter, DbServiceSettings, MoleculerDbMethods } from "moleculer
 import type MongoDbAdapter from "moleculer-db-adapter-mongo";
 import { AppDataSource } from "../database/data-source";
 import { User } from "../database/entities/user.entity";
+import {Meta} from "../interfaces/meta.interface";
 
 export interface UserEntity {
 	_id: string;
@@ -90,7 +91,9 @@ const UsersService: ServiceSchema<UserSettings> = {
 
 		listUsers: {
 			rest: "GET /listUsers",
-			async handler(this: UsersThis, ctx: Context): Promise<Object> {
+			async handler(this: UsersThis, ctx: Context<unknown, Meta>): Promise<Object> {
+				const contextUser = ctx.meta.user;
+				console.log('contextUser', contextUser);
 				const userRepository = AppDataSource.getRepository(User)
 				return userRepository.findAndCount();
 			},
