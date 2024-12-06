@@ -1,10 +1,11 @@
 import type { Context, ServiceSchema } from "moleculer";
 import type { ApiSettingsSchema, GatewayResponse, IncomingRequest, Route } from "moleculer-web";
 import ApiGateway from "moleculer-web";
-import {verifyToken} from "../utils/jwt-util";
+import {verifyToken} from "../utils/jwt.util";
 import { Meta } from "../interfaces/meta.interface";
 import {tenantResolverUtil} from "../utils/tenant-resolver-util";
 import {decode} from "jsonwebtoken";
+import {authenticate, authorize} from "../utils/auth.util";
 
 const ApiService: ServiceSchema<ApiSettingsSchema> = {
 	name: "api",
@@ -121,7 +122,7 @@ const ApiService: ServiceSchema<ApiSettingsSchema> = {
 				authentication: true,
 
 				// Enable authorization. Implement the logic into `authorize` method. More info: https://moleculer.services/docs/0.14/moleculer-web.html#Authorization
-				authorization: false,
+				authorization: true,
 
 				// The auto-alias feature allows you to declare your route alias directly in your services.
 				// The gateway will dynamically build the full routes from service schema.
@@ -205,87 +206,13 @@ const ApiService: ServiceSchema<ApiSettingsSchema> = {
 		 *
 		 * PLEASE NOTE, IT'S JUST AN EXAMPLE IMPLEMENTATION. DO NOT USE IN PRODUCTION!
 		 */
-		authenticate(
-			ctx: Context<unknown, Meta>,
-			route: Route,
-			req: IncomingRequest,
-		): Record<string, unknown> | null {
-			// Read the token from header
-			const authHeader = req.headers.authorization;
-
-			if (!authHeader) {
-				throw new ApiGateway.Errors.UnAuthorizedError(
-					ApiGateway.Errors.ERR_NO_TOKEN,
-					null,
-				);
-			}
-
-			if (!authHeader.startsWith("Bearer")) {
-				throw new ApiGateway.Errors.UnAuthorizedError(
-					ApiGateway.Errors.ERR_NO_TOKEN,
-					null,
-				);
-			}
-
-
-			const token = authHeader.split(" ")[1];
-
-			console.log('token', token);
-			if (!token || token === "null" || token === "") {
-				throw new Error("No token provided");
-			}
-
-			// Check the token. Tip: call a service which verify the token. E.g. `accounts.resolveToken`
-				if (verifyToken(token)) {
-					// Returns the resolved user. It will be set to the `ctx.meta.user`
-					const decodedToken = decode(token)  || null;
-					const decodedTokenString = JSON.stringify(decodedToken);
-
-
-					// Validate decoded token
-					if (!decodedToken) {
-						throw new ApiGateway.Errors.UnAuthorizedError(
-							ApiGateway.Errors.ERR_INVALID_TOKEN,
-							'Unable to decode token'
-						);
-					}
-
-					const decodedTokenJson = JSON.parse(decodedTokenString);
-
-					console.log('decodedTokenJson', decodedTokenJson);
-					// Return user information
-					return {
-						id: decodedTokenJson.sub,
-						email: decodedTokenJson.email,
-						roles: decodedTokenJson.roles,
-						tenantId: decodedTokenJson.tenantId,
-						permissions: decodedTokenJson.permissions,
-					};
-				}
-				// Invalid token
-				throw new ApiGateway.Errors.UnAuthorizedError(
-					ApiGateway.Errors.ERR_INVALID_TOKEN,
-					null,
-				);
-
-				return null;
-
-		},
-
+		authenticate,
 		/**
 		 * Authorize the request. Check that the authenticated user has right to access the resource.
 		 *
 		 * PLEASE NOTE, IT'S JUST AN EXAMPLE IMPLEMENTATION. DO NOT USE IN PRODUCTION!
 		 */
-		authorize(ctx: Context<null, Meta>, route: Route, req: IncomingRequest) {
-			// Get the authenticated user.
-			const { user } = ctx.meta;
-
-			// It check the `auth` property in action schema.
-			if (req.$action.auth === "required" && !user) {
-				throw new ApiGateway.Errors.UnAuthorizedError("NO_RIGHTS", null);
-			}
-		},
+		authorize,
 	},
 };
 

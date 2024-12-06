@@ -43,6 +43,7 @@
     "@types/glob": "^8.1.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
+    "csv-parse": "^5.6.0",
     "dotenv": "^16.4.6",
     "glob": "^11.0.0",
     "jsonwebtoken": "^9.0.2",

@@ -50,7 +50,4 @@ export class Tenant {
 	@OneToMany(() => Role, role => role.tenant)
 	roles!: Role[];
 
-	@OneToMany(() => Permission, permission => permission.tenant)
-	permissions!: Permissions[];
-
 }

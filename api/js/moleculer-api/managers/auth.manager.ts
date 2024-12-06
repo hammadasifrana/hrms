@@ -6,7 +6,7 @@ import { Role } from '../database/entities/role.entity';
 import { AppDataSource } from "../database/data-source";
 import {Client} from "../database/entities/client.entity";
 import jwt from "jsonwebtoken";
-import {generateToken} from "../utils/jwt-util";
+import {generateToken} from "../utils/jwt.util";
 import {Tenant} from "../database/entities/tenant.entity";
 const { MoleculerError } = require("moleculer").Errors;
 
@@ -17,11 +17,10 @@ export class AuthManager {
 		private tenantRepository = AppDataSource.getRepository(Tenant),
 	) {}
 
-	async register(UserRegisterParams: any): Promise<User> {
+	async register(UserRegisterParams: any, tenantId: string): Promise<User> {
 		const { email, password, name, roleNames } = UserRegisterParams;
 
 		// the client id should come from context
-		const tenantId = 'b8fd6b99-dc56-4d33-a239-89e09517f419';
 		const tenant = await this.tenantRepository.findOne({ where: { id: tenantId } });
 
 		const existingUser = await this.userRepository.findOne({

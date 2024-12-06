@@ -92,8 +92,6 @@ const UsersService: ServiceSchema<UserSettings> = {
 		listUsers: {
 			rest: "GET /listUsers",
 			async handler(this: UsersThis, ctx: Context<unknown, Meta>): Promise<Object> {
-				const contextUser = ctx.meta.user;
-				console.log('contextUser', contextUser);
 				const userRepository = AppDataSource.getRepository(User)
 				return userRepository.findAndCount();
 			},

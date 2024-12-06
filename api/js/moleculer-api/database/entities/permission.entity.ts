@@ -15,16 +15,11 @@ export class Permission {
 	@Column({unique: true})
 	name!: string;
 
+	@Column({unique: true})
+	resource!: string;
+
 	@Column({nullable: true})
 	description?: string;
-
-	@ManyToOne(() => Tenant, tenant => tenant.permissions)
-	@JoinColumn({ name: 'tenantId' })
-	tenant!: Tenant;
-
-	@Column({ name: 'tenantId' })
-	tenantId!: string;
-
 
 	@ManyToMany(() => Role, role => role.permissions)
 	roles!: Role[];

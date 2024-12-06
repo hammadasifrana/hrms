@@ -7,8 +7,9 @@ import { AuthManager } from "../managers/auth.manager";
 import {Role} from "../database/entities/role.entity";
 import {Permission} from "../database/entities/permission.entity";
 import {Client} from "../database/entities/client.entity";
-import {verifyToken} from "../utils/jwt-util";
+import {verifyToken} from "../utils/jwt.util";
 import {Tenant} from "../database/entities/tenant.entity";
+import {Meta} from "../interfaces/meta.interface";
 
 
 interface AuthSettings extends ServiceSettingSchema {
@@ -54,10 +55,11 @@ const AuthService: ServiceSchema<AuthSettings> = {
 				password: "string|positive",
 				roleNames: "array",
 			},
-			async handler(ctx: Context<UserRegisterParams>): Promise<Object> {
+			async handler(ctx: Context<UserRegisterParams, Meta>): Promise<Object> {
+				const tenantId = ctx.meta.tenantId || '';
 				const userRegisterParams: UserRegisterParams = ctx.params;
 				const authManager:AuthManager = new AuthManager();
-				return authManager.register(userRegisterParams);
+				return authManager.register(userRegisterParams, tenantId);
 			},
 		},
 
@@ -78,48 +80,42 @@ const AuthService: ServiceSchema<AuthSettings> = {
 			rest: "GET /seed",
 			async handler(ctx: Context): Promise<string> {
 
-				const clientRepository = AppDataSource.getRepository(Client);
 				const tenantRepository = AppDataSource.getRepository(Tenant);
-				const userRepository = AppDataSource.getRepository(User);
 				const roleRepository = AppDataSource.getRepository(Role);
 				const permissionRepository = AppDataSource.getRepository(Permission);
 
-				const createTenant =  await tenantRepository.create({ id: 'b8fd6b99-dc56-4d33-a239-89e09517f419', name: 'Tenant 1', domain: 'localhost:3000' });
+				// const createTenant =  await tenantRepository.create({ id: 'b8fd6b99-dc56-4d33-a239-89e09517f419', name: 'Tenant 1', domain: 'localhost:3000' });
+				// await tenantRepository.save(createTenant);
 
-				await tenantRepository.save(createTenant);
+				const tenant = await tenantRepository.findOne({ where: { name: 'Tenant 1' } })
+					|| tenantRepository.create({ name: 'Tenant 1', domain: 'localhost:3000' });
 
-				const createPerm = await permissionRepository.findOne({ where: { name: 'create' } })
-					|| permissionRepository.create({ name: 'create', description: 'Create resources', tenantId: createTenant.id });
-				const readPerm = await permissionRepository.findOne({ where: { name: 'read' } })
-					|| permissionRepository.create({ name: 'read', description: 'Read resources', tenantId: createTenant.id });
-				const updatePerm = await permissionRepository.findOne({ where: { name: 'update' } })
-					|| permissionRepository.create({ name: 'update', description: 'Update resources', tenantId: createTenant.id });
-				const deletePerm = await permissionRepository.findOne({ where: { name: 'delete' } })
-					|| permissionRepository.create({ name: 'delete', description: 'Delete resources', tenantId: createTenant.id });
+				const listUsers = await permissionRepository.findOne({ where: { name: 'listUsers'} })
+					|| permissionRepository.create({ name: 'listUsers', description: 'List users', resource: 'GET /api/users/' });
 
-				await permissionRepository.save([createPerm, readPerm, updatePerm, deletePerm]);
+				await permissionRepository.save([listUsers]);
 
 				// Create default roles
 				const userRole = await roleRepository.findOne({ where: { name: 'user' } })
 					|| roleRepository.create({
 						name: 'user',
 						description: 'Standard user role',
-						permissions: [readPerm],
-						tenantId: createTenant.id
+						permissions: [],
+						tenantId: tenant.id
 					});
 
 				const adminRole = await roleRepository.findOne({ where: { name: 'admin' } })
 					|| roleRepository.create({
 						name: 'admin',
 						description: 'Administrator role',
-						permissions: [createPerm, readPerm, updatePerm, deletePerm],
-						tenantId: createTenant.id
+						permissions: [listUsers],
+						tenantId: tenant.id
 
 					});
 
 				await roleRepository.save([userRole, adminRole]);
 
-				return "roles and permissions added";
+				return "seed completed";
 			},
 		},
 
