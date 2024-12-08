@@ -25,8 +25,8 @@ export class User {
 	@ManyToMany(() => Role, {eager: true, cascade: true})
 	@JoinTable({
 		name: 'user_roles',
-		joinColumn: {name: 'userId', referencedColumnName: 'id'},
-		inverseJoinColumn: {name: 'roleId', referencedColumnName: 'id'}
+		joinColumn: {name: 'user_id', referencedColumnName: 'id'},
+		inverseJoinColumn: {name: 'role_id', referencedColumnName: 'id'}
 	})
 	roles!: Role[];
 
@@ -34,15 +34,15 @@ export class User {
 	name!: string;
 
 	@ManyToOne(() => Tenant, tenant => tenant.users)
-	@JoinColumn({ name: 'tenantId' })
+	@JoinColumn({ name: 'tenant_id' })
 	tenant!: Tenant;
 
-	@Column({ name: 'tenantId' })
+	@Column({ name: 'tenant_id' })
 	tenantId!: string;
 
-	@CreateDateColumn()
+	@CreateDateColumn({ name: 'created_at' })
 	createdAt!: Date;
 
-	@UpdateDateColumn()
+	@UpdateDateColumn({ name: 'updated_at' })
 	updatedAt!: Date;
 }

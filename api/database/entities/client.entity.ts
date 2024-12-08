@@ -19,19 +19,19 @@ export class Client {
 	name!: string;
 
 	@ManyToOne(() => Tenant, tenant => tenant.clients)
-	@JoinColumn({ name: 'tenantId' })
+	@JoinColumn({ name: 'tenant_id' })
 	tenant!: Tenant;
 
-	@Column({ name: 'tenantId' })
+	@Column({ name: 'tenant_id' })
 	tenantId!: string;
 
-	@Column({default: true})
+	@Column({default: true, name: 'is_active'})
 	isActive!: boolean;
 
-	@CreateDateColumn()
+	@CreateDateColumn({name: 'created_at'})
 	createdAt!: Date;
 
-	@UpdateDateColumn()
+	@UpdateDateColumn({name: 'updated_at'})
 	updatedAt!: Date;
 
 

@@ -20,17 +20,17 @@ export class Role {
 	description?: string;
 
 	@ManyToOne(() => Tenant, tenant => tenant.roles)
-	@JoinColumn({ name: 'tenantId' })
+	@JoinColumn({ name: 'tenant_id' })
 	tenant!: Tenant;
 
-	@Column({ name: 'tenantId' })
+	@Column({ name: 'tenant_id' })
 	tenantId!: string;
 
 	@ManyToMany(() => Permission, {eager: true, cascade: true})
 	@JoinTable({
 		name: 'roles_permissions',
-		joinColumn: {name: 'roleId', referencedColumnName: 'id'},
-		inverseJoinColumn: {name: 'permissionId', referencedColumnName: 'id'}
+		joinColumn: {name: 'role_id', referencedColumnName: 'id'},
+		inverseJoinColumn: {name: 'permission_id', referencedColumnName: 'id'}
 	})
 	permissions!: Permission[];
 }

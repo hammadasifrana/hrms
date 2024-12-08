@@ -24,15 +24,15 @@ export class TenantConfiguration {
 	metadata?: Record<string, any>;
 
 	@ManyToOne(() => Tenant, tenant => tenant.configurations)
-	@JoinColumn({ name: 'tenantId' })
+	@JoinColumn({ name: 'tenant_id' })
 	tenant!: Tenant;
 
-	@Column({ name: 'tenantId' })
+	@Column({ name: 'tenant_id' })
 	tenantId!: string;
 
-	@CreateDateColumn()
+	@CreateDateColumn({ name: 'created_at' })
 	createdAt!: Date;
 
-	@UpdateDateColumn()
+	@UpdateDateColumn({ name: 'updated_at' })
 	updatedAt!: Date;
 }
