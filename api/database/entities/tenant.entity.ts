@@ -11,6 +11,8 @@ import { Client } from './client.entity';
 import { User } from './user.entity';
 import { Role } from './role.entity';
 import {Permission} from "./permission.entity";
+import {Department} from "./department.entity";
+import {Employee} from "./employee.entity";
 
 @Entity('tenants')
 export class Tenant {
@@ -35,7 +37,6 @@ export class Tenant {
 	@CreateDateColumn({ name: 'created_at' })
 	createdAt!: Date;
 
-
 	@UpdateDateColumn({ name: 'updated_at' })
 	updatedAt!: Date;
 
@@ -50,5 +51,12 @@ export class Tenant {
 
 	@OneToMany(() => Role, role => role.tenant)
 	roles!: Role[];
+
+	@OneToMany(() => Department, department => department.tenant)
+	departments!: Department[];
+
+	@OneToMany(() => Employee, employee => employee.tenant)
+	employees!: Employee[];
+
 
 }

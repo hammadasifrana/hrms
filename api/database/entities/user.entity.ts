@@ -5,11 +5,12 @@ import {
 	CreateDateColumn,
 	UpdateDateColumn,
 	ManyToMany,
-	JoinTable, JoinColumn, ManyToOne
+	JoinTable, JoinColumn, ManyToOne, OneToOne
 } from "typeorm";
 import {Role} from './role.entity';
 import {Client} from "./client.entity";
 import {Tenant} from "./tenant.entity";
+import {Employee} from "./employee.entity";
 
 @Entity('users')
 export class User {
@@ -39,6 +40,10 @@ export class User {
 
 	@Column({ name: 'tenant_id' })
 	tenantId!: string;
+
+	@OneToOne(() => Employee, employee => employee.user)
+	@JoinColumn({ name: 'employee_id' })
+	employee!: Employee;
 
 	@CreateDateColumn({ name: 'created_at' })
 	createdAt!: Date;
