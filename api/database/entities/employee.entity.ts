@@ -22,7 +22,7 @@ export class Employee {
     @Column({name: 'last_name'})
     lastName!: string;
 
-    @Column({ nullable: true })
+    @Column({ nullable: false, unique: true })
     email?: string;
 
     @Column({ nullable: true, name: 'phone_number' })

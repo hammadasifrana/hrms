@@ -16,5 +16,5 @@ export const databaseConfig: DataSourceOptions = {
 	migrations: [
 		__dirname + '/../database/migrations/**/*{.ts,.js}'
 	],
-	migrationsTableName: 'migrations'
+	migrationsTableName: 'migrations',
 };
