@@ -1,25 +1,24 @@
-import type { HttpContext } from '@adonisjs/core/http'
-import type { NextFn } from '@adonisjs/core/types/http'
-import type { Authenticators } from '@adonisjs/auth/types'
+// app/Middleware/AuthMiddleware.ts
+import { HttpContext } from '@adonisjs/core/http'
+import AuthService from '#services/auth.service'
 
-/**
- * Auth middleware is used authenticate HTTP requests and deny
- * access to unauthenticated users.
- */
 export default class AuthMiddleware {
-  /**
-   * The URL to redirect to, when authentication fails
-   */
-  redirectTo = '/login'
+  private authService = new AuthService()
 
-  async handle(
-    ctx: HttpContext,
-    next: NextFn,
-    options: {
-      guards?: (keyof Authenticators)[]
-    } = {}
-  ) {
-    await ctx.auth.authenticateUsing(options.guards, { loginRoute: this.redirectTo })
-    return next()
+  public async handle({ request, response }: HttpContext, next: () => Promise<void>) {
+    const token = request.header('Authorization')?.replace('Bearer ', '')
+
+    if (!token) {
+      return response.status(401).json({ message: 'Token not provided' })
+    }
+
+    try {
+      const decoded = this.authService.verifyToken(token)
+      request.user = decoded // Attach user info to the request
+      //console.log(request.user);
+      await next()
+    } catch (error) {
+      return response.status(401).json({ message: error.message })
+    }
   }
 }

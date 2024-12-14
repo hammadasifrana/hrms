@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.uuid('id').primary().defaultTo(this.raw('gen_random_uuid()'))
       table.string('name').notNullable().unique()
       table.string('description')
-      table.uuid('client_id').references('clients.id').onDelete('CASCADE').notNullable()
+      table.uuid('tenant_id').references('tenants.id').onDelete('CASCADE').notNullable()
       table.timestamp('created_at').defaultTo(this.now())
       table.timestamp('updated_at').defaultTo(this.now())
     })

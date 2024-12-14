@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.uuid('id').primary().defaultTo(this.raw('gen_random_uuid()'))
       table.string('email', 254).notNullable().unique()
       table.string('password').notNullable()
-      table.uuid('client_id').references('clients.id').onDelete('CASCADE').notNullable()
+      table.uuid('tenant_id').references('tenants.id').onDelete('CASCADE').notNullable()
       table.uuid('employee_id').references('employees.id').onDelete('CASCADE').nullable()
       table.timestamp('created_at').notNullable().defaultTo(this.now())
       table.timestamp('updated_at').nullable().defaultTo(this.now())

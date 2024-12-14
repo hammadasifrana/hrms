@@ -1,16 +1,15 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
-import {randomUUID} from "node:crypto";
 
 export default class extends BaseSchema {
-  protected tableName = 'roles'
+  protected tableName = 'password_resets'
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary().defaultTo(this.raw('gen_random_uuid()'))
-      table.uuid('tenant_id').references('tenants.id').onDelete('CASCADE').notNullable()
-      table.string('name').notNullable().unique()
+      table.uuid('user_id').references('users.id').onDelete('CASCADE').notNullable()
+      table.string('token').notNullable().index('password_resets_token_index')
+      table.timestamp('expires_at').notNullable()
       table.timestamp('created_at').defaultTo(this.now())
-      table.timestamp('updated_at').defaultTo(this.now())
     })
   }
 

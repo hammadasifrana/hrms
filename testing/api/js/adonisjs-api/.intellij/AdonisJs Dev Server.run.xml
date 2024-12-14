@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="AdonisJs Dev Server" type="NodeJSConfigurationType" application-parameters="serve --hmr " path-to-js-file="ace.js" working-dir="$PROJECT_DIR$">
+    <method v="2" />
+  </configuration>
+</component>

@@ -19,7 +19,7 @@ export default class extends BaseSchema {
       table.string('photo')
       table.string('job_title')
       table.uuid('department_id').references('departments.id').onDelete('CASCADE').notNullable()
-      table.uuid('client_id').references('clients.id').onDelete('CASCADE').notNullable()
+      table.uuid('tenant_id').references('tenants.id').onDelete('CASCADE').notNullable()
       table.uuid('manager_id').references('employees.id')
       table.enum('status', ['active', 'inactive']).defaultTo('active')
       table.timestamp('created_at').defaultTo(this.now())
